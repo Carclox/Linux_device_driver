@@ -42,16 +42,17 @@ sudo rmmod rpi_led_gpio_driver
 *** verificar con dmesg | tail  que el led se apaga y el driver se desacrga limpiamente
 */
 
-#include <linux/module.h>     // Para MODULE_LICENSE, MODULE_VERSION, etc.
-#include <linux/kernel.h>     // Para KERN_INFO, printk
-#include <linux/init.h>       // Para __init, __exit
-#include <linux/fs.h>         // Para struct file_operations, y funciones de fs
-#include <linux/cdev.h>       // Para cdev_init, cdev_add, cdev_del
-#include <linux/uaccess.h>    // Para copy_to_user, copy_from_user
-#include <linux/device.h>     // Para class_create, device_create, device_destroy, class_destroy
-#include <linux/gpio.h>       // Para gpio_request, gpio_direction_output, gpio_set_value, gpio_get_value, gpio_free
 
-// Definicion del nombre del dispositivo
+
+#include <linux/module.h>      // Para MODULE_LICENSE, MODULE_VERSION, etc.
+#include <linux/kernel.h>      // Para KERN_INFO, printk
+#include <linux/init.h>        // Para __init, __exit
+#include <linux/fs.h>          // Para struct file_operations, y funciones de fs
+#include <linux/cdev.h>        // Para cdev_init, cdev_add, cdev_del
+#include <linux/uaccess.h>     // Para copy_to_user, copy_from_user
+#include <linux/device.h>      // Para class_create, device_create, device_destroy, class_destroy
+#include <linux/gpio.h>        // Para gpio_request, gpio_direction_output, gpio_set_value, gpio_get_value, gpio_free
+
 #define         DEVICE_NAME         "rpi_led"
 
 // Metadatos del modulo
@@ -67,7 +68,7 @@ MODULE_ALIAS("platform:rpi-LED-ctrl");
 // Numero de pin GPIO BCM para el LED
 // ¡IMPORTANTE!: Asegúrate de que este sea el pin BCM correcto para tu Raspberry Pi.
 // hay un offset raro
-#define         LED_GPIO_PIN        536
+#define         LED_GPIO_PIN        536   // con offset
 
 
 static  dev_t   rpi_led_dev_num;     // numero mayor / menor del dispositivo

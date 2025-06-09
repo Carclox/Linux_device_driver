@@ -5,7 +5,7 @@
       <paths name="rpi_led (d65dbb7c-fe36-40d5-b237-20982144db81)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/Linux_device_driver" local="$PROJECT_DIR$" />
+            <mapping deploy="/" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
