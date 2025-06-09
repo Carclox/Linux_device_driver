@@ -10,7 +10,7 @@ para control de LED por GPIO en raspberry pi zero 2w
 /*
 ---------------- Instrucciones importantes
 
-*** Guardar el archivo fuente  como rpi_led_gpio_driver.c
+*** Guardar el archivo fuente  como rpi_led_driver.c
 
 compilar en bash con comando make
 
@@ -18,7 +18,7 @@ cargar el modulo
 sudo insmod rpi_led_gpio_driver.ko
 
 verificar los mensajes del kernel
-dmesg | tail
+dmesg | tail [20]
 
 verificar nodo del dispositivo
 ls -l /dev/rpi_led
@@ -68,7 +68,7 @@ MODULE_ALIAS("platform:rpi-LED-ctrl");
 // Numero de pin GPIO BCM para el LED
 // ¡IMPORTANTE!: Asegúrate de que este sea el pin BCM correcto para tu Raspberry Pi.
 // hay un offset raro
-#define         LED_GPIO_PIN        536   // con offset
+#define         LED_GPIO_PIN        536   // con offset   para el pin 24
 
 
 static  dev_t   rpi_led_dev_num;     // numero mayor / menor del dispositivo

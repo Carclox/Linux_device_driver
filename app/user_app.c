@@ -4,9 +4,9 @@
  * a través del dispositivo de caracteres /dev/rpi_led.
  *
  * Uso:
- * ./rpi_led_user_app on       - Enciende el LED
- * ./rpi_led_user_app off      - Apaga el LED
- * ./rpi_led_user_app status   - Lee y muestra el estado actual del LED
+ * ./app on           - Enciende el LED
+ * ./app off          - Apaga el LED
+ * ./app status       - Lee y muestra el estado actual del LED
  */
 
 
@@ -91,7 +91,7 @@ int app(int argc, char *argv[]) {
         fprintf(stderr, "Asegúrate de que el driver rpi_led esté cargado o intenta cargarlo.\n");
 
         // Intentar cargar el driver y reintentar abrir el dispositivo
-        cargar_driver();
+        //cargar_driver();
         fd = open(DEVICE_PATH, O_RDWR); // Reintentar abrir
         if (fd < 0) {
             perror("Error: No se pudo abrir el dispositivo después de intentar cargar el driver");
@@ -164,11 +164,11 @@ verificar que el driver este cargado
 sudo insmod rpi_led_gpio_driver.ko
 
 ejecutar para encender
-sudo ./rpi_led_user_app on
+sudo ./app on
 
 ejecutar para apagar
-sudo ./rpi_led_user_app off
+sudo ./app off
 
 para verificar el estado del pin
-sudo ./rpi_led_user_app status
+sudo ./app status
 */

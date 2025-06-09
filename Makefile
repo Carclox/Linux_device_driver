@@ -1,7 +1,7 @@
 #directorios de salida
 
-OBJ_DIR := obj
-BIN_DIR := bin
+OBJ_DIR := obj/
+BIN_DIR := bin/
 
 .PHONY: all app driver tests clean
 
@@ -17,10 +17,10 @@ tests: app driver $(OBJ_DIR)/test_driver.o $(OBJ_DIR)/test_app.o
 		$(MAKE) -C tests all
 		@echo "Todos los componentes, incluyendo los tests han sido construidos."
 
-$(BIN_DIR)/app:
+$(BIN_DIR)app:
 		$(MAKE) -C app
 
-$(OBJ_DIR)/rpi_led_driver.ko:
+$(OBJ_DIR)rpi_led_driver.ko:
 		$(MAKE) -C driver
 
 $(OBJ_DIR)/test_driver.o $(OBJ_DIR)/test_app.o
@@ -32,7 +32,7 @@ clean:
 		$(MAKE) -C app clean
 		$(MAKE) -C driver clean
 		$(MAKE) -C tests clean
-		rm -f $(OBJ_DIR)/*.o $(OBJ_DIR)/*.ko $(BIN_DIR)/*
+		rm -f $(OBJ_DIR)*.o $(OBJ_DIR)*.ko $(BIN_DIR)*
 		@echo "Limpieza completa"
 
 
