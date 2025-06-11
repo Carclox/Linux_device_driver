@@ -27,3 +27,6 @@ estructura:
     |    |_ makefile
     |_ Makefile
     |_ Readme.md
+
+
+Esta es la estructura central

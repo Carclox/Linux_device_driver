@@ -21,21 +21,21 @@ OBJS := $(SRCS:.C=.O)
 all: $(BIN_DIR)/$(TARGET)
 
 $(BIN_DIR)/$(TARGET): $(OBJ_DIR)/app.o | $(BIN_DIR)
-		$(CC) $(OBJ_DIR)/app.o -o $@
-		@echo "Ejecutable $(TARGET) creado en $(BIN_DIR)"
+	$(CC) $(OBJ_DIR)/app.o -o $@
+	@echo "Ejecutable $(TARGET) creado en $(BIN_DIR)"
 
 $(OBJ_DIR)/app.o: $(SRCS) | $(OBJ_DIR)
-		$(CC) -c $< -o $@
-		@echo "Objeto app.o creado en $(OBJ_DIR)"
+	$(CC) -c $< -o $@
+	@echo "Objeto app.o creado en $(OBJ_DIR)"
 
 .PHONY: clean
 clean:
-		rm -f $(OBJ_DIR)/$(OBJS) $(BIN_OBJ_DIR)/$(TARGET)
-		@echo "Limpieza del modulo app completa."
+	rm -f $(OBJ_DIR)/$(OBJS) $(BIN_OBJ_DIR)/$(TARGET)
+	@echo "Limpieza del modulo app completa."
 
 # reglas para crear directorios si no existen
 $(OBJ_DIR):
-		mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)
 
 $(BIN_DIR):
-		mkdir -p $(BIN_DIR)
+	mkdir -p $(BIN_DIR)
