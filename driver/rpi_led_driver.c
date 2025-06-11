@@ -2,15 +2,12 @@
 Control de dispositivo de carácter Linux
 para control de LED por GPIO en raspberry pi zero 2w
 
-
-
-*************  DOCUMENTACION DOXIGEN ************
+************* DOCUMENTACION DOXIGEN ************
 //#include <soc/bcm2835/raspberrypi-firmware.h>
 
-/*
----------------- Instrucciones importantes
+// ---------------- Instrucciones importantes
 
-*** Guardar el archivo fuente  como rpi_led_driver.c
+*** Guardar el archivo fuente como rpi_led_driver.c
 
 compilar en bash con comando make
 
@@ -39,19 +36,18 @@ cat /dev/rpi_led
 descargar el modulo
 sudo rmmod rpi_led_gpio_driver
 
-*** verificar con dmesg | tail  que el led se apaga y el driver se desacrga limpiamente
+*** verificar con dmesg | tail que el led se apaga y el driver se desacrga limpiamente
 */
 
-
-
-#include <linux/module.h>      // Para MODULE_LICENSE, MODULE_VERSION, etc.
+#include <linux/module.h>
 #include <linux/kernel.h>      // Para KERN_INFO, printk
-#include <linux/init.h>        // Para __init, __exit
+#include <linux/init.h>
 #include <linux/fs.h>          // Para struct file_operations, y funciones de fs
 #include <linux/cdev.h>        // Para cdev_init, cdev_add, cdev_del
 #include <linux/uaccess.h>     // Para copy_to_user, copy_from_user
-#include <linux/device.h>      // Para class_create, device_create, device_destroy, class_destroy
-#include <linux/gpio.h>        // Para gpio_request, gpio_direction_output, gpio_set_value, gpio_get_value, gpio_free
+#include <linux/device.h>
+#include <linux/gpio.h>
+// #include <linux/gpio/consumer.h> // Podría ser necesario si realmente usaras gpiod_*
 
 #define         DEVICE_NAME         "rpi_led"
 
@@ -61,24 +57,19 @@ MODULE_AUTHOR("Carlos S rangel, Valeria Garcia Rodas");
 MODULE_DESCRIPTION("GPIO LED driver");
 MODULE_ALIAS("platform:rpi-LED-ctrl");
 
-
 //--------------------------------//
 // Definiciones globales //
 
 // Numero de pin GPIO BCM para el LED
-// ¡IMPORTANTE!: Asegúrate de que este sea el pin BCM correcto para tu Raspberry Pi.
 // hay un offset raro
-#define         LED_GPIO_PIN        536   // con offset   para el pin 24
-
+#define         LED_GPIO_PIN        536   // con offset para el pin 24
 
 static  dev_t   rpi_led_dev_num;     // numero mayor / menor del dispositivo
 static struct cdev rpi_led_cdev;     // estructura cdev para el dispositivo
 static struct class *rpi_led_class; // clase de dispositivo para sys/class
 
-
 //---------------------------------------//
 // Funciones de operaciones de archivo (File operations)
-
 
 /**
 * @brief Se llama cuando el usuario abre el nodo del dispositivo /dev/rpi_led.
@@ -92,7 +83,6 @@ static int rpi_led_open(struct inode *inode, struct file *file)
     printk(KERN_INFO "rpi_led: Dispositivo abierto. \n");
     return 0;
 }
-
 
 /**
  * @brief Se llama cuando el usuario cierra el nodo del dispositivo /dev/rpi_led
@@ -168,7 +158,7 @@ static ssize_t rpi_led_write(struct file *file, const char __user *user_buf, siz
         printk(KERN_INFO "rpi_led: LED encendido. \n");
     } else if (kbuf == '0') {
         gpio_set_value(LED_GPIO_PIN, 0); // Apagar el led
-        printk(KERN_INFO "rpi_led: LED apagado.\n"); // CORREGIDO: /n a \n en el original
+        printk(KERN_INFO "rpi_led: LED apagado.\n");
     } else {
         printk(KERN_WARNING "rpi_led: Comando de escritura desconocido. use '0' o '1'.\n");
         return -EINVAL; // Argumento invalido
@@ -255,7 +245,7 @@ static int __init rpi_led_init(void)
 
     ret = gpio_direction_output(LED_GPIO_PIN, 0); //configurarlo como salida e iniciar en low (LED apagado)
     if (ret < 0) {
-        printk(KERN_ERR "rpi_led: Fallo al configurar GPIO  %d como salida. Error: %d\n", LED_GPIO_PIN, ret);
+        printk(KERN_ERR "rpi_led: Fallo al configurar GPIO %d como salida. Error: %d\n", LED_GPIO_PIN, ret);
         gpio_free(LED_GPIO_PIN); // Liberar el pin gpio
         device_destroy(rpi_led_class, rpi_led_dev_num);
         class_destroy(rpi_led_class);
@@ -277,11 +267,9 @@ static void __exit rpi_led_exit(void)
 {
     printk(KERN_INFO "rpi_led: Descargando controlador de LED GPIO... \n");
 
-    // asegurarse de apagar el led al descargar el modulo
-    // Primero, verificar si el GPIO fue solicitado antes de intentar establecer su valor
-    // Esto es una buena práctica para evitar errores si el request falló en init
-    if (gpio_is_valid(LED_GPIO_PIN) && gpio_cansleep(LED_GPIO_PIN)) {
-        // gpio_cansleep puede no ser necesario si no hay sleeping en el contexto exit
+    // CAMBIO 2: Eliminar la verificación de gpio_cansleep()
+    // Asegurarse de apagar el led al descargar el modulo
+    if (gpio_is_valid(LED_GPIO_PIN)) { // Solo verificamos si el GPIO es válido
         gpio_set_value(LED_GPIO_PIN, 0);
         printk(KERN_INFO "rpi_led: LED del GPIO %d apagado. \n", LED_GPIO_PIN);
         // Liberar el pin GPIO
@@ -290,7 +278,6 @@ static void __exit rpi_led_exit(void)
     } else {
          printk(KERN_WARNING "rpi_led: GPIO %d no válido o no se pudo liberar (ya libre o error en init).\n", LED_GPIO_PIN);
     }
-
 
     // El orden de liberación es inverso al de asignación para asegurar una limpieza adecuada
     // 1. Destruir el nodo del dispositivo en /dev
@@ -314,4 +301,3 @@ static void __exit rpi_led_exit(void)
 // Registro de las funciones de inicializacion y limpieza del modulo
 module_init(rpi_led_init);
 module_exit(rpi_led_exit);
-
