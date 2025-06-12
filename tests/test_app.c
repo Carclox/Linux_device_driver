@@ -9,8 +9,8 @@
 
 // Define la ruta a tu ejecutable de la aplicación y el driver
 #define APP_PATH        "./app" // Asume que el ejecutable 'app' está en el mismo directorio
-#define DRIVER_MODULE_NAME "rpi_led_gpio_driver" // Nombre del módulo, no la ruta del .ko
-#define DRIVER_KO_PATH  "/home/PI/Linux_device_driver/obj/rpi_led_gpio_driver.ko" // Ruta completa al archivo .ko
+#define DRIVER_MODULE_NAME "rpi_led_driver" // Nombre del módulo, no la ruta del .ko
+#define DRIVER_KO_PATH  "/home/PI/Linux_device_driver/obj/rpi_led_driver.ko" // Ruta completa al archivo .ko
 
 // --- Funciones auxiliares para cargar/descargar driver ---
 void load_driver() {

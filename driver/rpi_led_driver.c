@@ -12,7 +12,7 @@ para control de LED por GPIO en raspberry pi zero 2w
 compilar en bash con comando make
 
 cargar el modulo
-sudo insmod rpi_led_gpio_driver.ko
+sudo insmod rpi_led_driver.ko
 
 verificar los mensajes del kernel
 dmesg | tail [20]
@@ -34,7 +34,7 @@ leer estado
 cat /dev/rpi_led
 
 descargar el modulo
-sudo rmmod rpi_led_gpio_driver
+sudo rmmod rpi_led_driver
 
 *** verificar con dmesg | tail que el led se apaga y el driver se desacrga limpiamente
 */
