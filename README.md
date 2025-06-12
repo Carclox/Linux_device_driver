@@ -5,8 +5,9 @@ Tarea 2 - Programación de Sistemas Embebidos Linux
 * Carlos S. Rangel | 1005065786
 * Valeria Garcia Rodas | 1192801328
 
+### Propósito general
 
-En este proyecto se desarrolla la aplicación **rpi_led_driver.c** en lenguaje C que controla un LED conectado a GPIO. El controlador implementa operaciones **init, exit, open, release, read y write**, y debe tener una interfaz de archivos /dev para la interación de usuario.
+El objetivo principal de este proyecto es desarrollar la aplicación **rpi_led_driver.c** en lenguaje C que controla un LED conectado a GPIO. El controlador implementa operaciones **init, exit, open, release, read y write**, y debe tener una interfaz de archivos /dev para la interación de usuario.
 
 ### Funcionamiento de la app: 
 
