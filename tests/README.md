@@ -1,4 +1,4 @@
-## test driver 
+## Test driver 
 
 Este código es un paquete de pruebas automatizadas en C diseñada para verificar el correcto funcionamiento de un driver del kernel de Linux que controla un LED conectado a un GPIO, así como su aplicación de usuario (./app), que permite encender, apagar y consultar el estado del LED.
 
